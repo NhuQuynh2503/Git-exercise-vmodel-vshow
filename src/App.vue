@@ -5,7 +5,7 @@
           <form action="">
             <div class="form-group">
               <label for="twitter">Twitter handle</label>
-              <input v-model="twitter" type="email" name="twitter" id="twitter" required>
+              <input  v-model="twitter" type="email" name="twitter" id="twitter" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
@@ -16,21 +16,51 @@
             <p >Log in</p> 
             <Icon class="i" icon="basil:arrow-right-outline"></Icon></button>
           </form>
-          <p class="submit" v-show="showSuccess">{{ successMessenger }}</p>
+          <!-- <p class="submit" v-show="showSuccess">{{ successMessenger }}</p> -->
       </div>
+
+      <div class="invalid-wrapper" v-if="isShowPopupInvalid">
+        <div class="popup-main">
+            <Icon class="i" icon="ic:outline-cancel"></Icon>
+            <h2>Invalid email!</h2>
+            <p>This email is already registered please login. </p>
+            <button @click="closePopupInvalid" class="btn">OK</button>
+        </div>
+    </div>
+    <div class="successfully-container" v-if="isShowSuccessfully">
+        <div class="popup-success">
+            <Icon class="i" icon="ic:round-check-circle-outline"></Icon>
+            <h2>Oh Yeah!</h2>
+            <p>You have successfully registered and logged in. </p>
+            <button   class="btn">OK</button>
+        </div>
+    </div>
+
+       <!-- <PopupInvalid v-show="isShowPopupInvalid"/>
+      <PopupSuccessfully v-show="isShowSuccessfully"/> -->
 </template>
 <script setup>
   import {ref} from "vue"
-  const twitter = ref('')
-  const password = ref('')
-  const showSuccess =  ref(false)
-  const successMessenger = ref('')
-  function change(value){
-    twitter.value=''
-    password.value=''
-    showSuccess.value=true
-    successMessenger.value='Thanh cong!'
-    
+
+  const twitter = ref('');
+  const password = ref('');
+  const isShowPopupInvalid = ref(false);
+  const isShowSuccessfully = ref(false);
+  
+
+function change() {
+    if (twitter.value === "a@example.com" && password.value === "123456") {
+        isShowSuccessfully.value = true;
+        isShowPopupInvalid.value = false;
+    } else {
+        isShowPopupInvalid.value = true;
+        isShowSuccessfully.value = false;
+    }
+    twitter.value = '';
+    password.value = '';
+  }
+  function closePopupInvalid() {
+    isShowPopupInvalid.value = false;
   }
 </script>
 
@@ -116,4 +146,97 @@ a{
   color: #E23C3C;
   text-align: center;
 }
+
+
+/* ---- invalid*/
+.invalid-wrapper{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        background: #7f7f7f;
+    }
+    .popup-main{
+        width: 350px;
+        height: 300px;
+        background: #fff;
+        border-radius: 10px;
+    }
+    .popup-main .i{
+        font-size: 80px;
+        color: red;
+        margin: 5px 140px;
+    }
+    .popup-main h2{
+        font-size: 25px;
+        color: red;
+        margin-left: 100px;
+    }
+    .popup-main p{
+        font-size: 20px;
+        color: #75787a;
+        text-align: center;
+    }
+    .popup-main .btn{
+        width: 80px;
+        height: 50px;
+        border-radius: 10px;
+        background: red;
+        border: none;
+        color: #fff;
+        padding-top: 15px;
+        margin: 10px 140px;
+    }
+/* 
+    ----successfully */
+    .successfully-container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        background: #7f7f7f;
+    }
+    .popup-success{
+        width: 350px;
+        height: 300px;
+        background: #fff;
+        border-radius: 10px;
+    }
+    .popup-success .i{
+        font-size: 80px;
+        color: #198754;
+        margin: 5px 140px;
+    }
+    .popup-success h2{
+        font-size: 25px;
+        color: #198754;
+        margin-left: 135px;
+    }
+    .popup-success p{
+        font-size: 20px;
+        color: #75787a;
+        text-align: center;
+    }
+    .popup-success .btn{
+        width: 80px;
+        height: 50px;
+        border-radius: 10px;
+        background: #198754;
+        border: none;
+        color: #fff;
+        margin: 10px 140px;
+        padding-top: 15px;
+    }
+
+
 </style>
